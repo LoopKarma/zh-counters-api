@@ -1,6 +1,7 @@
 package test.exampls.zenhomes.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name="villages")
+@NoArgsConstructor
 public class Village implements Serializable {
     private static final long serialVersionUID = 1L;
 

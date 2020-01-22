@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CounterDTO {
     private Integer id;
+    private Float amount;
     private String villageName;
 }
