@@ -1,14 +1,14 @@
-package test.exampls.zenhomes.api.dto;
+package test.exampls.zenhomes.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CounterDTO {
     private Integer id;
     private Float amount;
     private String villageName;
+    private Integer villageId;
 }

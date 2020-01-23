@@ -1,4 +1,4 @@
-package test.exampls.zenhomes.api.dto;
+package test.exampls.zenhomes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

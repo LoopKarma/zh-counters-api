@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import test.exampls.zenhomes.api.dto.CounterDTO;
-import test.exampls.zenhomes.api.dto.CounterUpdateDTO;
+import test.exampls.zenhomes.dto.CounterDTO;
+import test.exampls.zenhomes.dto.CounterUpdateDTO;
 import test.exampls.zenhomes.domain.Counter;
 import test.exampls.zenhomes.domain.Event;
 import test.exampls.zenhomes.exception.NotFoundException;
 import test.exampls.zenhomes.repository.CounterRepository;
 import test.exampls.zenhomes.service.transformer.EventTransformer;
 
-import java.util.UUID;
+import javax.transaction.Transactional;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -24,14 +24,18 @@ public class CounterServiceImpl implements CounterService {
     private final EventTransformer eventTransformer;
 
     @Override
+    @Transactional
     public void updateCounter(Integer counterId, CounterUpdateDTO updateDTO) throws NotFoundException {
         Counter counter = counterRepository.findById(counterId).orElseThrow(NotFoundException::new);
 
+        //save event before counter update to ensure we have old counter value
+        createUpdateCounterEvent(counter);
+
         BeanUtils.copyProperties(updateDTO, counter);
         log.info("Counter({}) is updated", counterId);
-
         counterRepository.saveAndFlush(counter);
 
+        //save event after counter update to keep new counter value
         createUpdateCounterEvent(counter);
     }
 
@@ -40,11 +44,11 @@ public class CounterServiceImpl implements CounterService {
         Counter counter = counterRepository.findById(counterId)
                 .orElseThrow(createNotFoundException(counterId, "Counter"));
 
-        return new CounterDTO(
-                counter.getId(),
-                counter.getAmount(),
-                counter.getVillage().getName()
-        );
+        return CounterDTO.builder()
+                .id(counter.getId())
+                .amount(counter.getAmount())
+                .villageName(counter.getVillage().getName())
+                .build();
     }
 
     private void createUpdateCounterEvent(Counter counter) {
@@ -52,7 +56,7 @@ public class CounterServiceImpl implements CounterService {
         BeanUtils.copyProperties(counter, counterDTO);
 
         Event event = eventTransformer.toEvent(counterDTO);
-        UUID eventUuid = eventService.createEvent(event);
+        Integer eventUuid = eventService.createEvent(event);
         log.info("Counter update event ({}) is created", eventUuid);
     }
 

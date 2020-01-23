@@ -2,21 +2,10 @@ package test.exampls.zenhomes.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import test.exampls.zenhomes.domain.Event;
-import test.exampls.zenhomes.domain.EventStatus;
-import test.exampls.zenhomes.domain.EventType;
-import test.exampls.zenhomes.exception.EventProcessingException;
 import test.exampls.zenhomes.repository.EventRepository;
-import test.exampls.zenhomes.service.eventprocessor.EventProcessor;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static java.util.function.Function.identity;
 
 @Slf4j
 @Service
@@ -31,7 +20,7 @@ public class EventServiceImpl implements EventService {
 //    }
 
     @Override
-    public UUID createEvent(Event event) {
+    public Integer createEvent(Event event) {
         log.info("Creating event {}", event);
         Event saved = eventRepository.saveAndFlush(event);
 

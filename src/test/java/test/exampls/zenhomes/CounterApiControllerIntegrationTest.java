@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
-import test.exampls.zenhomes.api.dto.CounterDTO;
-import test.exampls.zenhomes.api.dto.CounterUpdateDTO;
+import test.exampls.zenhomes.dto.CounterDTO;
+import test.exampls.zenhomes.dto.CounterUpdateDTO;
 
 import java.util.stream.Stream;
 
@@ -24,8 +24,8 @@ import static org.hamcrest.CoreMatchers.is;
 		"/sql/insert-test-data.sql"
 })
 @Profile("integration-testing")
-class CounterControllerIntegrationTest {
-	private static int existingCounter = 1;
+class CounterApiControllerIntegrationTest {
+	private static int existingCounterId = 1;
 	private static int nonExistingCounter = 123;
 	private static String village1Name = "Test village";
 
@@ -47,7 +47,7 @@ class CounterControllerIntegrationTest {
 
 	@Test
 	void counterUpdate() {
-		Integer response = existingCounter;
+		Integer response = existingCounterId;
 		Float newAmount = 99.1F;
 		CounterUpdateDTO request = new CounterUpdateDTO(newAmount);
 
@@ -55,7 +55,7 @@ class CounterControllerIntegrationTest {
 				.header(new Header("Content-Type", "application/json"))
 				.body(gson.toJson(request))
 		.when()
-				.post("/v1/counter/"+existingCounter)
+				.post("/v1/counter/"+ existingCounterId)
 		.then()
 				.statusCode(HttpStatus.OK.value())
 				.header("Content-Type", is("application/json"))
@@ -63,15 +63,18 @@ class CounterControllerIntegrationTest {
 		;
 	}
 
-
 	@Test
 	void getCounter() {
-		CounterDTO expected = new CounterDTO(existingCounter, 0F, village1Name);
+		CounterDTO expected = CounterDTO.builder()
+				.id(existingCounterId)
+				.amount(0F)
+				.villageName(village1Name)
+				.build();
 
 		given()
 				.header(new Header("Content-Type", "application/json"))
 		.when()
-				.get("/v1/counter/"+existingCounter)
+				.get("/v1/counter/"+ existingCounterId)
 		.then()
 				.statusCode(HttpStatus.OK.value())
 				.header("Content-Type", is("application/json"))
@@ -81,10 +84,10 @@ class CounterControllerIntegrationTest {
 
 	private static Stream<Arguments> createInvalidUpdateCounterRequests() {
 		return Stream.of(
-				Arguments.of(gson.toJson(""), existingCounter),
-				Arguments.of(gson.toJson("{}"), existingCounter),
-				Arguments.of(gson.toJson("{\"amount\": \"string\"}"), existingCounter),
-				Arguments.of(gson.toJson("{\"amount\": \"string\"}"), existingCounter),
+				Arguments.of(gson.toJson(""), existingCounterId),
+				Arguments.of(gson.toJson("{}"), existingCounterId),
+				Arguments.of(gson.toJson("{\"amount\": \"string\"}"), existingCounterId),
+				Arguments.of(gson.toJson("{\"amount\": \"string\"}"), existingCounterId),
 				Arguments.of(gson.toJson("{\"amount\": \"123\"}"), nonExistingCounter)
 		);
 	}

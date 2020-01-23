@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import test.exampls.zenhomes.api.dto.CounterDTO;
-import test.exampls.zenhomes.api.dto.CounterUpdateDTO;
+import test.exampls.zenhomes.dto.CounterDTO;
+import test.exampls.zenhomes.dto.CounterUpdateDTO;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

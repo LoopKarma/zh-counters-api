@@ -2,7 +2,7 @@ package test.exampls.zenhomes.service.transformer;
 
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
-import test.exampls.zenhomes.api.dto.CounterDTO;
+import test.exampls.zenhomes.dto.CounterDTO;
 import test.exampls.zenhomes.domain.Event;
 import test.exampls.zenhomes.domain.EventType;
 

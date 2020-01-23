@@ -1,7 +1,7 @@
 package test.exampls.zenhomes.service;
 
-import test.exampls.zenhomes.api.dto.CounterDTO;
-import test.exampls.zenhomes.api.dto.CounterUpdateDTO;
+import test.exampls.zenhomes.dto.CounterDTO;
+import test.exampls.zenhomes.dto.CounterUpdateDTO;
 import test.exampls.zenhomes.exception.NotFoundException;
 
 public interface CounterService {
