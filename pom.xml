@@ -18,7 +18,7 @@
 		<java.version>12</java.version>
 		<!--region Testing -->
 		<junit-jupiter.version>5.3.2</junit-jupiter.version>
-		<assertj.version>3.12.2</assertj.version>
+		<assertj.version>3.27.7</assertj.version>
 		<java-hamcrest.version>2.0.0.0</java-hamcrest.version>
 		<mockito.version>2.27.0</mockito.version>
 		<rest-assured.version>4.1.1</rest-assured.version>
